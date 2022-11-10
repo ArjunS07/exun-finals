@@ -25,9 +25,12 @@ load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', False)
-ALLOWED_HOSTS = [
-    '*'
-]
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = [
+    "exun-finals.herokuapp.com"
+    ]
 
 
 # Application definition
