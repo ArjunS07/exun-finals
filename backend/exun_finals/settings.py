@@ -142,7 +142,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 sentry_sdk.init(
-    dsn="TODO:INSERT_SENTRY_DSN_HERE",
+    dsn="https://b049971906b44032a26ca518c757d12d@o879237.ingest.sentry.io/4504136192688128",
     integrations=[DjangoIntegration()],
 
     # Set traces_sample_rate to 1.0 to capture 100%
