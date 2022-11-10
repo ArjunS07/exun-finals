@@ -12,8 +12,12 @@ whitenoise = "*"
 django-environ = "*"
 python-dotenv = '*'
 sentry-sdk = "*"
+djangorestframework = "*"
+django-multiselectfield = "*"
+pillow = "*"
 
 [dev-packages]
+autopep8 = "*"
 
 [requires]
 python_version = "3.9"
