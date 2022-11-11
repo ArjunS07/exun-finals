@@ -1,1 +1,0 @@
-web: gunicorn exun_finals.wsgi
