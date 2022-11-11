@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-MaterialColor primaryColorSwatch = Colors.blue;
 Color primaryColor = Colors.blue.shade900;
 Color secondaryColor = Colors.amber.shade100;
 

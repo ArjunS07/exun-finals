@@ -1,16 +1,48 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-void rememberLogin() async {
-  final prefs = await SharedPreferences.getInstance();
+void rememberLogin(
+  SharedPreferences prefs,
+) {
   prefs.setBool('loggedIn', true);
 }
 
-void saveTabState(int index) async {
-  final prefs = await SharedPreferences.getInstance();
+void forgetLogin(
+  SharedPreferences prefs,
+) {
+  prefs.setBool('loggedIn', false);
+}
+
+isLoggedIn(
+  SharedPreferences prefs,
+) {
+  return (prefs.getBool('loggedIn') == true);
+}
+
+void saveTabState(SharedPreferences prefs, int index) async {
   prefs.setInt('lastTab', index);
 }
 
-void forgetLogin() async {
-  final prefs = await SharedPreferences.getInstance();
-  prefs.setBool('loggedIn', false);
+getTabState(
+  SharedPreferences prefs,
+) {
+  return prefs.getInt('lastTab');
+}
+
+void makeDyslexicFont(
+  SharedPreferences prefs,
+) {
+  prefs.setBool('isDyslexicFont', true);
+}
+
+void makeNormalFont(
+  SharedPreferences prefs,
+) {
+  prefs.setBool('isDyslexicFont', false);
+}
+
+isDyslexicFont(
+  SharedPreferences prefs,
+) {
+  var isDyslexic = prefs.getBool('isDyslexicFont');
+  return isDyslexic;
 }

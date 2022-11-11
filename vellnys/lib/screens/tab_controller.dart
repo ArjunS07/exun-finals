@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:vellnys/persistence.dart' as persistence;
+import 'package:vellnys/config.dart' as config;
 
 import 'package:vellnys/screens/settings.dart';
 
@@ -20,7 +21,7 @@ class _BottomTabControllerState extends State<BottomTabController> {
   @override
   void initState() {
     setState(() {
-      _index = widget.prefs.getInt('lastTab') ?? 0;
+      _index = persistence.getTabState(widget.prefs) ?? 0;
     });
     super.initState();
   }
@@ -39,6 +40,7 @@ class _BottomTabControllerState extends State<BottomTabController> {
     return Scaffold(
       body: SizedBox.expand(child: child),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: config.primaryColor,
         onTap: (newIndex) => setState(() => _index = newIndex),
         currentIndex: _index,
         items: const <BottomNavigationBarItem>[

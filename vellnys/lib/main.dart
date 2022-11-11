@@ -27,13 +27,14 @@ class MyApp extends StatelessWidget {
 
   _decideMainPage() {
     print('Deciding main page...');
-    if (prefs.getBool('loggedIn') == true) {
+    var isLoggedIn = prefs.getBool('loggedIn') ?? false;
+    if (isLoggedIn) {
       print('Already logged in');
       return BottomTabController(prefs: prefs);
     } else {
       // TODO: Remove this and add proper implementation in welcome.dart
       print('Remembering login..');
-      persistence.rememberLogin();
+      persistence.rememberLogin(prefs);
 
       return const Welcome();
     }
@@ -43,10 +44,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: config.primaryColorSwatch,
-        ),
+        title: 'Vellnys',
+        theme: ThemeData(primaryColor: config.primaryColor),
         home: _decideMainPage());
   }
 }
