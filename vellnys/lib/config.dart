@@ -4,6 +4,12 @@ MaterialColor primaryColorSwatch = Colors.blue;
 Color primaryColor = Colors.blue.shade900;
 Color secondaryColor = Colors.amber.shade100;
 
+TextStyle titleTS = TextStyle(
+  fontSize: 36,
+  fontWeight: FontWeight.bold,
+  color: primaryColor,
+);
+
 TextStyle heading1TS = const TextStyle(
   color: Colors.black,
   fontSize: 36,
@@ -13,11 +19,11 @@ TextStyle heading1TS = const TextStyle(
 TextStyle heading2TS = const TextStyle(
   color: Colors.black,
   fontSize: 28,
-  fontWeight: FontWeight.bold,
+  fontWeight: FontWeight.w600,
 );
 
 TextStyle bodyTS = const TextStyle(
   color: Colors.black,
   fontSize: 14,
-  fontWeight: FontWeight.bold,
+  fontWeight: FontWeight.normal,
 );

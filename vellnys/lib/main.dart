@@ -8,12 +8,15 @@ import 'config.dart' as config;
 
 import 'package:vellnys/screens/welcome.dart';
 import 'package:vellnys/screens/tab_controller.dart';
+import 'package:vellnys/persistence.dart' as persistence;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  print('Running app...');
   runApp(MyApp(prefs: prefs));
 }
 
@@ -23,10 +26,16 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key, required this.prefs}) : super(key: key);
 
   _decideMainPage() {
+    print('Deciding main page...');
     if (prefs.getBool('loggedIn') == true) {
+      print('Already logged in');
       return BottomTabController(prefs: prefs);
     } else {
-      return Welcome();
+      // TODO: Remove this and add proper implementation in welcome.dart
+      print('Remembering login..');
+      persistence.rememberLogin();
+
+      return const Welcome();
     }
   }
 
