@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:vellnys/persistence.dart' as persistence;
+
 import 'package:vellnys/screens/settings.dart';
 
 class BottomTabController extends StatefulWidget {
@@ -13,13 +15,12 @@ class BottomTabController extends StatefulWidget {
 }
 
 class _BottomTabControllerState extends State<BottomTabController> {
-  var _isLoading = true;
   int _index = 0;
 
   @override
   void initState() {
     setState(() {
-      _isLoading = true;
+      _index = widget.prefs.getInt('lastTab') ?? 0;
     });
     super.initState();
   }
@@ -42,36 +43,6 @@ class _BottomTabControllerState extends State<BottomTabController> {
         currentIndex: _index,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.people), label: "Volunteers"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Find"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: "Settings"),
-        ],
-      ),
-    );
-  }
-
-  Widget _bottomTabController() {
-    Widget child = Container();
-
-    switch (_index) {
-      case 0:
-        child = Container();
-        break;
-      case 1:
-        child = Container();
-        break;
-      case 2:
-        child = Container();
-        break;
-    }
-    return Scaffold(
-      body: SizedBox.expand(child: child),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (newIndex) => setState(() => _index = newIndex),
-        currentIndex: _index,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
               icon: Icon(Icons.chat_bubble), label: "Connect"),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), label: "Settings"),
@@ -83,12 +54,6 @@ class _BottomTabControllerState extends State<BottomTabController> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? const Scaffold(
-            body: SizedBox.expand(
-                child: Center(
-            child: CircularProgressIndicator(),
-          )))
-        : _tabController();
+    return _tabController();
   }
 }
