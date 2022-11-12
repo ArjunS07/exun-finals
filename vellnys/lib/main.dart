@@ -27,16 +27,15 @@ class MyApp extends StatelessWidget {
 
   _decideMainPage() {
     print('Deciding main page...');
-    var isLoggedIn = prefs.getBool('loggedIn') ?? false;
-    // TODO
+    // var isLoggedIn = prefs.getBool('loggedIn') ?? false;
     // return BottomTabController(prefs: prefs);
-    return Welcome();
-    if (isLoggedIn) {
-      print('Already logged in');
-      return BottomTabController(prefs: prefs);
-    } else {
-      return const Welcome();
-    }
+    return const Welcome();
+    // if (isLoggedIn) {
+    //   print('Already logged in');
+    //   return BottomTabController(prefs: prefs);
+    // } else {
+    //   return const Welcome();
+    // }
   }
 
   // This widget is the root of your application.
@@ -46,7 +45,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Vellnys',
         theme: ThemeData(primaryColor: config.primaryColor),
-        home: Welcome());
+        home: _decideMainPage());
   }
 }
 
