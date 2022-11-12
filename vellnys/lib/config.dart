@@ -64,7 +64,7 @@ ButtonStyle primaryButtonStyle = ButtonStyle(
   )),
   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
     RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(7.5),
+      borderRadius: BorderRadius.circular(12.0),
     ),
   ),
 );

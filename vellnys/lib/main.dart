@@ -7,6 +7,8 @@ import 'firebase_options.dart';
 import 'config.dart' as config;
 
 import 'package:vellnys/screens/welcome.dart';
+import 'package:vellnys/screens/premium.dart';
+import 'package:vellnys/screens/settings.dart';
 import 'package:vellnys/screens/tab_controller.dart';
 import 'package:vellnys/persistence.dart' as persistence;
 
@@ -29,7 +31,9 @@ class MyApp extends StatelessWidget {
     print('Deciding main page...');
     // var isLoggedIn = prefs.getBool('loggedIn') ?? false;
     // return BottomTabController(prefs: prefs);
-    return const Welcome();
+    // return Settings(prefs: prefs);
+    return Welcome();
+    // return Settings(prefs: prefs);
     // if (isLoggedIn) {
     //   print('Already logged in');
     //   return BottomTabController(prefs: prefs);
