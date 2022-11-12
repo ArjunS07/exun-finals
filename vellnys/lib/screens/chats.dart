@@ -79,7 +79,9 @@ class _ChatListState extends State<ChatList> {
             });
             break;
           case DocumentChangeType.modified:
-            break;
+            activeChats
+                .removeWhere((element) => element['id'] == change.doc.id);
+            activeChats.add(change.doc.data() as Map<String, dynamic>);
         }
       }
     });
@@ -147,13 +149,20 @@ class _ChatListState extends State<ChatList> {
                   },
                 ),
               ),
-              activeChats.length < 3
+              activeChats.isEmpty
                   ? primaryButton(
                       action: () => _getNewChatFriend(),
                       'Find new buddy',
                     )
-                  : Text("You've reached the number of free chats",
-                      style: TextStyle(color: Colors.grey.shade600))
+                  : Spacer(),
+              Text(
+                  "You've reached the maximum number of free chats. Upgrade to premium for unlimited chats.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.grey.shade500,
+                    fontSize: 18.0,
+                  )),
+              Spacer()
             ],
           )),
     );
@@ -418,6 +427,10 @@ class _ChatScreenState extends State<ChatScreen> {
         .doc(chatRoomId)
         .collection("messages")
         .add(newMessage.toJson());
+    FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(chatRoomId)
+        .update({"lastMessage": _controller.text});
     setState(() {
       isSending = false;
     });
@@ -580,6 +593,10 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       isSending = false;
     });
+    await FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(chatRoomId)
+        .update({"lastMessage": 'Audio message'});
   }
 
   void _startTimer() {
