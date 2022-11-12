@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:vellnys/persistence.dart' as persistence;
 import 'package:vellnys/config.dart' as config;
+import 'package:vellnys/screens/premium.dart';
 
 import 'package:vellnys/screens/settings.dart';
 
@@ -17,6 +18,7 @@ class BottomTabController extends StatefulWidget {
 
 class _BottomTabControllerState extends State<BottomTabController> {
   int _index = 0;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -32,11 +34,15 @@ class _BottomTabControllerState extends State<BottomTabController> {
       case 0:
         break;
       case 1:
-        break;
-      case 2:
         child = Settings(prefs: widget.prefs);
         break;
+      case 2:
+        child = Premium();
+        break;
     }
+    setState(() {
+      _isLoading = false;
+    });
     return Scaffold(
       body: SizedBox.expand(child: child),
       bottomNavigationBar: BottomNavigationBar(
