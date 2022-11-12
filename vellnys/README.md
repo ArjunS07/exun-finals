@@ -1,4 +1,4 @@
-# vellnys
+# loqui
 
 A new Flutter project.
 

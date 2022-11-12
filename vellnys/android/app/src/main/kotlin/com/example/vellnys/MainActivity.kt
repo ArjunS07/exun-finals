@@ -1,4 +1,4 @@
-package com.example.vellnys
+package com.example.loqui
 
 import io.flutter.embedding.android.FlutterActivity
 

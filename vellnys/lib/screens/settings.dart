@@ -3,9 +3,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vellnys/config.dart' as config;
-import 'package:vellnys/persistence.dart' as persistence;
+import 'package:loqui/config.dart' as config;
+import 'package:loqui/persistence.dart' as persistence;
 import 'welcome.dart';
+import 'package:settings_ui/settings_ui.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class Settings extends StatefulWidget {
   final SharedPreferences prefs;
@@ -17,70 +19,55 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  var _isLoading = true;
-
-  // Prefs
-  late var _usesDyslexiaFont;
-  late var _usesColouredBackgrounds;
-  late var disablesChatRotations;
-
-  _logOut() async {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const Welcome()));
-  }
-
-  _toggleDyslexiaSetting(SharedPreferences prefs) async {
-    _usesDyslexiaFont = !_usesDyslexiaFont;
-  }
-
-  _toggleColouredBackgroundsSetting(SharedPreferences prefs) async {
-    _usesColouredBackgrounds = !_usesColouredBackgrounds;
-    if (persistence.isColorTheme(prefs, 'colored')) {
-      persistence.setColorTheme(prefs, 'default');
-    } else {
-      persistence.setColorTheme(prefs, 'colored');
-    }
+  void _logout() {
+    persistence.forgetLogin(widget.prefs);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Welcome()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-            child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Row(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: const Text('Settings'),
+          backgroundColor: Colors.blue.shade800,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 40.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Column(
-                children: [
-                  config.body('Use dyslexia-friendly font'),
-                  Switch(
-                      value: _usesDyslexiaFont,
-                      onChanged: _toggleDyslexiaSetting(widget.prefs)),
+              Expanded(
+                  child: SettingsList(
+                sections: [
+                  SettingsSection(
+                    title: const Text('Theme'),
+                    tiles: <SettingsTile>[
+                      SettingsTile.navigation(
+                        leading: const Icon(Icons.language),
+                        title: const Text('Language'),
+                        value: const Text('English'),
+                      ),
+                      SettingsTile.switchTile(
+                        // onToggle: (value) {!value},
+                        onToggle: null,
+                        initialValue: true,
+                        leading: const Icon(Icons.format_paint),
+                        title: const Text('Use Dyslexic Theme'),
+                      ),
+                    ],
+                  ),
                 ],
-              )
+              )),
+              const SizedBox(height: 24.0),
+              config.primaryButton('Sign out',
+                  icon: Icons.logout, action: _logout),
             ],
           ),
-          Row(
-            children: [
-              Column(
-                children: [
-                  config.body('Use dyslexia-friendly font'),
-                  Switch(
-                      value: _usesColouredBackgrounds,
-                      onChanged:
-                          _toggleColouredBackgroundsSetting(widget.prefs)),
-                ],
-              )
-            ],
-          ),
-          const SizedBox(height: 24.0),
-          config.primaryButton('Sign out', icon: Icons.logout, action: _logOut),
-        ],
-      ),
-    )));
+        ));
   }
 }

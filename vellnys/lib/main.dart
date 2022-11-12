@@ -6,11 +6,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'config.dart' as config;
 
-import 'package:vellnys/screens/welcome.dart';
-import 'package:vellnys/screens/premium.dart';
-import 'package:vellnys/screens/settings.dart';
-import 'package:vellnys/screens/tab_controller.dart';
-import 'package:vellnys/persistence.dart' as persistence;
+import 'package:loqui/screens/welcome.dart';
+import 'package:loqui/screens/premium.dart';
+import 'package:loqui/screens/settings.dart';
+import 'package:loqui/screens/tab_controller.dart';
+import 'package:loqui/persistence.dart' as persistence;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,17 +29,13 @@ class MyApp extends StatelessWidget {
 
   _decideMainPage() {
     print('Deciding main page...');
-    // var isLoggedIn = prefs.getBool('loggedIn') ?? false;
-    // return BottomTabController(prefs: prefs);
-    // return Settings(prefs: prefs);
-    return Welcome();
-    // return Settings(prefs: prefs);
-    // if (isLoggedIn) {
-    //   print('Already logged in');
-    //   return BottomTabController(prefs: prefs);
-    // } else {
-    //   return const Welcome();
-    // }
+    var isLoggedIn = prefs.getBool('loggedIn') ?? false;
+    if (isLoggedIn) {
+      print('Already logged in');
+      return BottomTabController(prefs: prefs);
+    } else {
+      return const Welcome();
+    }
   }
 
   // This widget is the root of your application.
@@ -47,7 +43,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Vellnys',
+        title: 'LoQui',
         theme: ThemeData(primaryColor: config.primaryColor),
         home: _decideMainPage());
   }

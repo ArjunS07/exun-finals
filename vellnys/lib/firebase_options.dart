@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '759089337688',
     projectId: 'exun-finals-c3c44',
     storageBucket: 'exun-finals-c3c44.appspot.com',
-    iosClientId: '759089337688-hvtot0sm7q44reprlfqkv6unnnjm7265.apps.googleusercontent.com',
-    iosBundleId: 'com.example.vellnys',
+    iosClientId:
+        '759089337688-hvtot0sm7q44reprlfqkv6unnnjm7265.apps.googleusercontent.com',
+    iosBundleId: 'com.example.loqui',
   );
 }

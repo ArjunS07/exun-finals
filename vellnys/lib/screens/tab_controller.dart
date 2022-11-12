@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:loqui/screens/chats.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:vellnys/persistence.dart' as persistence;
-import 'package:vellnys/config.dart' as config;
-import 'package:vellnys/screens/premium.dart';
+import 'package:loqui/persistence.dart' as persistence;
+import 'package:loqui/config.dart' as config;
+import 'package:loqui/screens/premium.dart';
 
-import 'package:vellnys/screens/settings.dart';
+import 'package:loqui/screens/settings.dart';
 
 class BottomTabController extends StatefulWidget {
   final SharedPreferences prefs;
-
   const BottomTabController({Key? key, required this.prefs}) : super(key: key);
 
   @override
@@ -18,10 +18,20 @@ class BottomTabController extends StatefulWidget {
 
 class _BottomTabControllerState extends State<BottomTabController> {
   int _index = 0;
-  bool _isLoading = true;
 
+  // late SharedPreferences? prefs;
+
+  // void _getPrefs() async {
+  //   prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _isLoading = false;
+  //   });
+  //}
+  // join once you're done we'
   @override
   void initState() {
+    // prefs = await SharedPreferences.getInstance();
+
     setState(() {
       _index = persistence.getTabState(widget.prefs) ?? 0;
     });
@@ -32,17 +42,16 @@ class _BottomTabControllerState extends State<BottomTabController> {
     Widget child = Container();
     switch (_index) {
       case 0:
+        child = ChatList(prefs: widget.prefs);
         break;
       case 1:
         child = Settings(prefs: widget.prefs);
         break;
       case 2:
-        child = Premium();
+        child = const Premium();
         break;
     }
-    setState(() {
-      _isLoading = false;
-    });
+
     return Scaffold(
       body: SizedBox.expand(child: child),
       bottomNavigationBar: BottomNavigationBar(

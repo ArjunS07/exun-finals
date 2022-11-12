@@ -4,9 +4,27 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:math' as math; // import this
+import 'dart:typed_data'; // import this
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:vellnys/config.dart';
-import 'package:vellnys/persistence.dart' as persistence;
+import 'package:dice_bear/dice_bear.dart';
+import 'package:loqui/config.dart';
+import 'package:loqui/persistence.dart' as persistence;
+
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:loqui/screens/tab_controller.dart';
+
+import 'package:loqui/image_utils.dart';
+
+String uint8ListTob64(Uint8List uint8list) {
+  String base64String = base64Encode(uint8list);
+  String header = "data:image/png;base64,";
+  return header + base64String;
+}
 
 class Welcome extends StatelessWidget {
   const Welcome({Key? key}) : super(key: key);
@@ -16,46 +34,56 @@ class Welcome extends StatelessWidget {
     return Scaffold(
         body: Center(
             child: Padding(
-      padding: const EdgeInsets.only(
-          top: 64.0, left: 16.0, right: 16.0, bottom: 40.0),
+      padding:
+          const EdgeInsets.only(top: 64.0, left: 32, right: 32.0, bottom: 40.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
-            child: Column(children: [
-              Text("Welcome to", style: heading2TS),
-              const SizedBox(height: 4.0),
-              Text("Vellnys", style: titleTS),
-              const SizedBox(height: 76.0),
-              const SizedBox(
-                  width: 200.0,
-                  height: 200.0,
-                  child: Card(
-                    color: Colors.green,
-                  )),
-              const SizedBox(height: 76.0),
-              Text("Going through tough times alone is hard.", style: bodyTS),
-              const SizedBox(height: 36.0),
-              Text(
-                "Vellnys helps you find the emotional support you need to make it through.",
-                style: bodyTS,
-                textAlign: TextAlign.center,
-              ),
-              // TODO: Move this to later screen
-              const SizedBox(
-                height: 76.0,
-              ),
-              Spacer(),
-              primaryButton('Get started',
-                  action: () => {
-                        print('Calling function...'),
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const NameGenerator()))
-                      })
-            ]),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Welcome to", style: heading2TS),
+                  const SizedBox(height: 30.0),
+                  const Image(
+                      width: 150.0, image: AssetImage('assets/logo.png')),
+                  Text("LoQui", style: titleTS),
+                  Spacer(),
+                  const Text("Going through tough times alone is hard.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600,
+                      )),
+                  const SizedBox(height: 36.0),
+                  const Text(
+                      "LoQui helps you find the emotional support you need to make it through.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w800,
+                      )),
+                  const SizedBox(height: 36.0),
+                  Text(
+                      "Connect anonymously with other individuals just like you, and mutually benefit from the power of therapeutic conversation.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.grey.shade800,
+                        fontWeight: FontWeight.w400,
+                      )),
+                  const Spacer(),
+                  primaryButton('Get started',
+                      action: () => {
+                            print('Calling function...'),
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const NameGenerator()))
+                          })
+                ]),
           ),
         ],
       ),
@@ -179,33 +207,36 @@ class _NameGeneratorState extends State<NameGenerator> {
                 ]),
                 const Spacer(),
                 primaryButton("Confirm name",
-                    action: () => {
-                          // ignore: avoid_print
-                          print('Calling function...'),
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const UserDetails()))
-                        })
+                    action: isLoadingName
+                        ? null
+                        : () => {
+                              // ignore: avoid_print
+                              print('Calling function...'),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          UserDetails(name: generatedName)))
+                            })
               ])),
     );
   }
 }
 
 class UserDetails extends StatefulWidget {
-  const UserDetails({Key? key}) : super(key: key);
+  final String name;
+  const UserDetails({Key? key, required this.name}) : super(key: key);
   @override
   _DetailsState createState() => _DetailsState();
 }
 
 class _DetailsState extends State<UserDetails> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _ageController = TextEditingController();
 
   bool _isMale = false;
   bool _hasChosenGender = false;
 
-  int _selectedAge = 0;
+  bool _isMakingAccount = false;
 
   // Location variables
   String? _country;
@@ -224,6 +255,11 @@ class _DetailsState extends State<UserDetails> {
   ];
 
   List selectedConditions = [];
+
+  // firebase
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  final storageRef = FirebaseStorage.instance.ref();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -396,10 +432,59 @@ class _DetailsState extends State<UserDetails> {
               ),
               const Spacer(),
               primaryButton("Create my account",
-                  icon: Icons.check, action: () {})
+                  icon: Icons.check,
+                  action: () => {_createFirebaseAccount(context)})
             ],
           )),
     );
+  }
+
+  void _createFirebaseAccount(context) async {
+    print('Calling create firbase function');
+    setState(() {
+      _isMakingAccount = true;
+    });
+    // get profile from dicebear
+
+    final profileImagesRef =
+        storageRef.child("profileImages").child("${widget.name}.png");
+
+    // Avatar _avatar = DiceBearBuilder.withRandomSeed().build();
+    // print('Got avatar from dicebear');
+    // Uint8List? raw = await _avatar.asRawSvgBytes();
+
+    // if (pngBase64 != null) {
+    //   await profileImagesRef.putData(pngBase64);
+    //   print('Uploaded profile image to firebase storage');
+    // }
+    // String profileUrl = await profileImagesRef.getDownloadURL();
+    final data = {
+      'isPremium': false,
+      'sex': _isMale ? 'M' : 'F',
+      'age': _ageController.text,
+      'city': _city,
+      'timeJoined': DateTime.now().toIso8601String(),
+      'name': widget.name,
+      'conditions': selectedConditions,
+    };
+    db.collection("users").add(data).then((value) async {
+      setState(() {
+        _isMakingAccount = false;
+      });
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      persistence.rememberLogin(prefs, firebaseUserId: value.id);
+      if (!mounted) return;
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => BottomTabController(prefs: prefs)));
+    });
+
+    setState(() {
+      _isMakingAccount = false;
+    });
+    //
   }
 
   String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
