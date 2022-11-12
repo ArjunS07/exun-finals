@@ -3,6 +3,7 @@ import 'package:csc_picker/csc_picker.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:math' as math; // import this
 
 import 'package:vellnys/config.dart';
 import 'package:vellnys/persistence.dart' as persistence;
@@ -166,8 +167,12 @@ class _NameGeneratorState extends State<NameGenerator> {
                                     fontSize: 16.0,
                                     color: primaryColor)),
                             const SizedBox(width: 8.0),
-                            Icon(Icons.restart_alt,
-                                size: 32.0, color: primaryColor)
+                            Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.rotationY(math.pi),
+                              child: Icon(Icons.restart_alt,
+                                  size: 32.0, color: primaryColor),
+                            )
                           ],
                         ),
                       )),
