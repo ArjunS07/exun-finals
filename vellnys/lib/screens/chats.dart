@@ -33,7 +33,9 @@ class _ChatListState extends State<ChatList> {
   var otherUsers = [];
   var activeChats = [];
 
-  var isLoading;
+  var _isInitialLoad = true;
+
+  var isLoading = false;
 
   // audio
 
@@ -85,6 +87,9 @@ class _ChatListState extends State<ChatList> {
         }
       }
     });
+    setState(() {
+      _isInitialLoad = false;
+    });
   }
 
   Widget _buildRow(index) {
@@ -114,6 +119,9 @@ class _ChatListState extends State<ChatList> {
   }
 
   _getNewChatFriend() async {
+    setState(() {
+      isLoading = true;
+    });
     print('Making request...');
     var request = http.MultipartRequest(
         'POST', Uri.parse('http://localhost:4996/match-user'));
@@ -127,6 +135,10 @@ class _ChatListState extends State<ChatList> {
     } else {
       print(response.reasonPhrase);
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -139,32 +151,76 @@ class _ChatListState extends State<ChatList> {
       ),
       body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: otherUsers.length,
-                  itemBuilder: (context, index) {
-                    return _buildRow(index);
-                  },
-                ),
-              ),
-              activeChats.isEmpty
-                  ? primaryButton(
-                      action: () => _getNewChatFriend(),
-                      'Find new buddy',
-                    )
-                  : Spacer(),
-              Text(
-                  "You've reached the maximum number of free chats. Upgrade to premium for unlimited chats.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.grey.shade500,
-                    fontSize: 18.0,
-                  )),
-              Spacer()
-            ],
-          )),
+          child: _isInitialLoad || isLoading
+              ? const Center(
+                  child: SizedBox(
+                      height: 50.0,
+                      width: 50.0,
+                      child: CircularProgressIndicator()))
+              : Column(
+                  children: [
+                    activeChats.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: const [
+                                Text(
+                                  textAlign: TextAlign.center,
+                                  'No buddies',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 21.0),
+                                ),
+                                SizedBox(height: 5.0),
+                                Text(
+                                  textAlign: TextAlign.center,
+                                  'Tap the button below to find a new buddy',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16.0),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Expanded(
+                            child: ListView.builder(
+                              itemCount: otherUsers.length,
+                              itemBuilder: (context, index) {
+                                return _buildRow(index);
+                              },
+                            ),
+                          ),
+                    const Spacer(),
+                    activeChats.isEmpty
+                        ? ElevatedButton(
+                            style: primaryButtonStyle,
+                            onPressed: () {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              _getNewChatFriend();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 21.0, vertical: 18.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text('Find new buddy'),
+                                ],
+                              ),
+                            ),
+                          )
+                        : Text(
+                            "You've reached the maximum number of buddies. Upgrade to premium for unlimited buddies.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.grey.shade500,
+                              fontSize: 18.0,
+                            )),
+                  ],
+                )),
     );
   }
 }

@@ -46,7 +46,7 @@ class _PremiumState extends State<Premium> {
                         fontWeight: FontWeight.bold),
                   )
                 ]),
-            const SizedBox(height: 24.0),
+            const SizedBox(height: 48.0),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -58,11 +58,11 @@ class _PremiumState extends State<Premium> {
                     fontSize: 20.0),
               ),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 5.0),
             Column(children: [
               Container(
                 decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
                     border: Border(
                       top: BorderSide(color: primaryColor),
                       left: BorderSide(color: primaryColor),
@@ -73,38 +73,40 @@ class _PremiumState extends State<Premium> {
                     padding: const EdgeInsets.all(12.0),
                     child: (Row(
                       children: [
-                        Column(children: const [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'More Chats',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0),
-                            ),
-                          ),
-                          SizedBox(height: 2.0),
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Open unlimited active chat rooms, above the limit of 3.',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12.0,
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'More Chats',
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0),
                                 ),
-                              )),
-                        ])
+                              ),
+                              SizedBox(height: 2.0),
+                              Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Open unlimited active chat rooms, above the limit of 3.',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12.0,
+                                    ),
+                                  )),
+                            ])
                       ],
                     ))),
               ),
-              const SizedBox(height: 24.0),
+              const SizedBox(height: 8.0),
               Container(
                 decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
                     border: Border(
                       top: BorderSide(color: primaryColor),
                       left: BorderSide(color: primaryColor),
@@ -142,23 +144,23 @@ class _PremiumState extends State<Premium> {
                     ))),
               ),
             ]),
-            const SizedBox(height: 24.0),
+            const SizedBox(height: 36.0),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 textAlign: TextAlign.left,
-                "Starting 9.99/month, you cal also ...",
+                "Starting 9.99/month, you can also ...",
                 style: TextStyle(
                     color: Colors.grey.shade800,
                     fontWeight: FontWeight.bold,
-                    fontSize: 20.0),
+                    fontSize: 18.0),
               ),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 5.0),
             Column(children: [
               Container(
                 decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
                     border: Border(
                       top: BorderSide(color: primaryColor),
                       left: BorderSide(color: primaryColor),

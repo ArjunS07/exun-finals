@@ -267,175 +267,182 @@ class _DetailsState extends State<UserDetails> {
         title: const Text('Your Information'),
         backgroundColor: primaryColor,
       ),
-      body: Padding(
-          padding: const EdgeInsets.only(
-              top: 40.0, left: 24.0, right: 24.0, bottom: 40.0),
-          child: Column(
-            children: [
-              Text('Tell us a bit about yourself', style: heading2TS),
-              const SizedBox(height: 24.0),
-              Text(
-                  textAlign: TextAlign.start,
-                  "We'll use this to match you with others who'll be best able to understand you. No one can see this data.",
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16.0,
-                    height: 1.25,
-                  )),
-              const SizedBox(height: 32.0),
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    textAlign: TextAlign.start,
-                    "Where do you live?",
-                    style: TextStyle(
-                      color: Colors.grey.shade900,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 17.5,
-                      height: 1.25,
-                    ),
-                  )),
-              const SizedBox(height: 6.0),
-              CSCPicker(
-                onCountryChanged: (value) {
-                  setState(() {
-                    _country = value;
-                  });
-                },
-                onStateChanged: (value) {
-                  setState(() {
-                    _state = value;
-                  });
-                },
-                onCityChanged: (value) {
-                  setState(() {
-                    _city = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 28.0),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body: _isMakingAccount
+          ? const Center(
+              child: SizedBox(
+                  height: 50.0,
+                  width: 50.0,
+                  child: CircularProgressIndicator()))
+          : Padding(
+              padding: const EdgeInsets.only(
+                  top: 40.0, left: 24.0, right: 24.0, bottom: 40.0),
+              child: Column(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Align(
-                          alignment: Alignment.centerLeft, child: Text("Sex")),
-                      const SizedBox(height: 4.0),
-                      Row(children: [
-                        ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: _hasChosenGender
-                                  ? _isMale
-                                      ? MaterialStateProperty.all<Color>(
-                                          primaryColor)
-                                      : MaterialStateProperty.all<Color>(
-                                          Colors.white)
-                                  : MaterialStateProperty.all<Color>(
-                                      Colors.white),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isMale = true;
-                                _hasChosenGender = true;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 16.0, horizontal: 16.0),
-                              child: Text("M",
-                                  style: TextStyle(
-                                      color: _hasChosenGender
-                                          ? _isMale
-                                              ? Colors.white
-                                              : primaryColor
-                                          : primaryColor)),
-                            )),
-                        const SizedBox(width: 8),
-                        ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                _isMale = false;
-                                _hasChosenGender = true;
-                              });
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: _hasChosenGender
-                                  ? _isMale
-                                      ? MaterialStateProperty.all<Color>(
-                                          Colors.white)
-                                      : MaterialStateProperty.all<Color>(
-                                          primaryColor)
-                                  : MaterialStateProperty.all<Color>(
-                                      Colors.white),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 16.0, horizontal: 16.0),
-                              child: Text("F",
-                                  style: TextStyle(
-                                      color: _hasChosenGender
-                                          ? _isMale
-                                              ? primaryColor
-                                              : Colors.white
-                                          : primaryColor)),
-                            )),
-                      ]),
-                    ],
+                  Text('Tell us a bit about yourself', style: heading2TS),
+                  const SizedBox(height: 24.0),
+                  Text(
+                      textAlign: TextAlign.start,
+                      "We'll use this to match you with others who'll be best able to understand you. No one can see this data.",
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.0,
+                        height: 1.25,
+                      )),
+                  const SizedBox(height: 32.0),
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        textAlign: TextAlign.start,
+                        "Where do you live?",
+                        style: TextStyle(
+                          color: Colors.grey.shade900,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17.5,
+                          height: 1.25,
+                        ),
+                      )),
+                  const SizedBox(height: 6.0),
+                  CSCPicker(
+                    onCountryChanged: (value) {
+                      setState(() {
+                        _country = value;
+                      });
+                    },
+                    onStateChanged: (value) {
+                      setState(() {
+                        _state = value;
+                      });
+                    },
+                    onCityChanged: (value) {
+                      setState(() {
+                        _city = value;
+                      });
+                    },
                   ),
-                  const SizedBox(width: 24.0),
-                  Column(
+                  const SizedBox(height: 28.0),
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Age", style: TextStyle(fontSize: 12.0)),
-                      const SizedBox(height: 4),
-                      SizedBox(
-                        width: 60.0,
-                        height: 48.0,
-                        child: TextField(
-                            keyboardType: TextInputType.number,
-                            controller: _ageController,
-                            style: TextStyle(fontSize: 12.0),
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                            )),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Sex")),
+                          const SizedBox(height: 4.0),
+                          Row(children: [
+                            ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: _hasChosenGender
+                                      ? _isMale
+                                          ? MaterialStateProperty.all<Color>(
+                                              primaryColor)
+                                          : MaterialStateProperty.all<Color>(
+                                              Colors.white)
+                                      : MaterialStateProperty.all<Color>(
+                                          Colors.white),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _isMale = true;
+                                    _hasChosenGender = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 16.0, horizontal: 16.0),
+                                  child: Text("M",
+                                      style: TextStyle(
+                                          color: _hasChosenGender
+                                              ? _isMale
+                                                  ? Colors.white
+                                                  : primaryColor
+                                              : primaryColor)),
+                                )),
+                            const SizedBox(width: 8),
+                            ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _isMale = false;
+                                    _hasChosenGender = true;
+                                  });
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: _hasChosenGender
+                                      ? _isMale
+                                          ? MaterialStateProperty.all<Color>(
+                                              Colors.white)
+                                          : MaterialStateProperty.all<Color>(
+                                              primaryColor)
+                                      : MaterialStateProperty.all<Color>(
+                                          Colors.white),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 16.0, horizontal: 16.0),
+                                  child: Text("F",
+                                      style: TextStyle(
+                                          color: _hasChosenGender
+                                              ? _isMale
+                                                  ? primaryColor
+                                                  : Colors.white
+                                              : primaryColor)),
+                                )),
+                          ]),
+                        ],
                       ),
+                      const SizedBox(width: 24.0),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Age", style: TextStyle(fontSize: 12.0)),
+                          const SizedBox(height: 4),
+                          SizedBox(
+                            width: 60.0,
+                            height: 48.0,
+                            child: TextField(
+                                keyboardType: TextInputType.number,
+                                controller: _ageController,
+                                style: TextStyle(fontSize: 12.0),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                )),
+                          ),
+                        ],
+                      )
                     ],
-                  )
-                ],
-              ),
-              const SizedBox(width: 10.0),
-              const SizedBox(height: 28.0),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  textAlign: TextAlign.start,
-                  "Which of these conditions have you been diagnosed with?",
-                  style: TextStyle(
-                    color: Colors.grey.shade900,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17.5,
-                    height: 1.25,
                   ),
-                ),
-              ),
-              MultiSelectDialogField(
-                items: conditions
-                    .map((e) => MultiSelectItem(e, capitalize(e)))
-                    .toList(),
-                listType: MultiSelectListType.CHIP,
-                onConfirm: (values) {
-                  selectedConditions = values;
-                },
-              ),
-              const Spacer(),
-              primaryButton("Create my account",
-                  icon: Icons.check,
-                  action: () => {_createFirebaseAccount(context)})
-            ],
-          )),
+                  const SizedBox(width: 10.0),
+                  const SizedBox(height: 28.0),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      textAlign: TextAlign.start,
+                      "Which of these conditions have you been diagnosed with?",
+                      style: TextStyle(
+                        color: Colors.grey.shade900,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 17.5,
+                        height: 1.25,
+                      ),
+                    ),
+                  ),
+                  MultiSelectDialogField(
+                    items: conditions
+                        .map((e) => MultiSelectItem(e, capitalize(e)))
+                        .toList(),
+                    listType: MultiSelectListType.CHIP,
+                    onConfirm: (values) {
+                      selectedConditions = values;
+                    },
+                  ),
+                  const Spacer(),
+                  primaryButton("Create my account",
+                      icon: Icons.check,
+                      action: () => {_createFirebaseAccount(context)})
+                ],
+              )),
     );
   }
 
@@ -468,12 +475,11 @@ class _DetailsState extends State<UserDetails> {
       'conditions': selectedConditions,
     };
     db.collection("users").add(data).then((value) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      persistence.rememberLogin(prefs, firebaseUserId: value.id);
       setState(() {
         _isMakingAccount = false;
       });
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      persistence.rememberLogin(prefs, firebaseUserId: value.id);
       if (!mounted) return;
       Navigator.pushReplacement(
           context,
@@ -481,9 +487,6 @@ class _DetailsState extends State<UserDetails> {
               builder: (context) => BottomTabController(prefs: prefs)));
     });
 
-    setState(() {
-      _isMakingAccount = false;
-    });
     //
   }
 

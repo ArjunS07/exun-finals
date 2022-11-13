@@ -64,8 +64,13 @@ class _SettingsState extends State<Settings> {
                 ],
               )),
               const SizedBox(height: 24.0),
-              config.primaryButton('Sign out',
-                  icon: Icons.logout, action: _logout),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                ),
+                child: config.primaryButton('Sign out',
+                    icon: Icons.logout, action: _logout),
+              ),
             ],
           ),
         ));
