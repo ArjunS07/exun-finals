@@ -25,7 +25,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   final SharedPreferences prefs;
 
-  const MyApp({Key? key, required this.prefs}) : super(key: key);
+  const MyApp({Key? key, required this.prefs, required String title}) : super(key: key);
 
   _decideMainPage() {
     print('Deciding main page...');
