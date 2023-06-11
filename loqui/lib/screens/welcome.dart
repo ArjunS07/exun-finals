@@ -445,9 +445,8 @@ class _DetailsState extends State<UserDetails> {
               )),
     );
   }
-
+// TODO: convert this to a firebase api call instead of using the firebase auth api
   void _createFirebaseAccount(context) async {
-    print('Calling create firbase function');
     setState(() {
       _isMakingAccount = true;
     });

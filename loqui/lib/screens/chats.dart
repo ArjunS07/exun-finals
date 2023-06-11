@@ -23,9 +23,11 @@ class ChatList extends StatefulWidget {
   const ChatList({Key? key, required this.prefs}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ChatListState createState() => _ChatListState();
 }
 
+// TODO: MAKE THIS A CALL TO THE FLASK API
 class _ChatListState extends State<ChatList> {
   final users = FirebaseFirestore.instance.collection('users');
   final chats = FirebaseFirestore.instance.collection('rooms');
